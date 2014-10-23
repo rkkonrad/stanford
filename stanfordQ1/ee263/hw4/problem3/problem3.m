@@ -20,9 +20,27 @@ a3 = a3';
 
 A = [a1;a2;a3];
 
+%Calculate Mean Squared Predictor Error
 mse = 0;
 for i=2:T
     mse = mse + norm(A*Y(:,i-1) - Y(:,i))^2;
 end
 
 mse = 1/(T-1) * mse;
+['The mean squared predictor error is ' num2str(mse) '.']
+
+%Calculate Mean Square Value
+msv = 0;
+for i = 1:T
+   msv = msv + norm(Y(:,i))^2; 
+end
+
+msv = 1/T*msv;
+['The mean squared value is ' num2str(msv) '.']
+
+%Predict y(T+1)
+
+yhat = A*Y(:,T);
+
+'The predicted value of y(T+1) is'
+yhat
