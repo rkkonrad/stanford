@@ -1,0 +1,276 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>q4</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-04-02"><meta name="DC.source" content="q4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Question 4. Part A</a></li><li><a href="#2">Question 4. Part B</a></li><li><a href="#3">Question 4. Part C</a></li></ul></div><h2>Question 4. Part A<a name="1"></a></h2><pre class="codeinput">clear <span class="string">all</span>;
+close <span class="string">all</span>;
+
+road1 = imread(<span class="string">'hw1_data/hw1_dark_road_1.jpg'</span>);
+road2 = imread(<span class="string">'hw1_data/hw1_dark_road_2.jpg'</span>);
+road3 = imread(<span class="string">'hw1_data/hw1_dark_road_3.jpg'</span>);
+
+figure;
+subplot(3,1,1); imhist(road1);
+title(<span class="string">'Hisograms of original images'</span>);
+subplot(3,1,2); imhist(road2);
+subplot(3,1,3); imhist(road3);
+
+<span class="comment">% We can see that for road_1 there is a large peak around grayscale level 5</span>
+<span class="comment">% and then a second smaller peak around the grayscale level 10. This second</span>
+<span class="comment">% peak is due to the dark gray (but not quite black) pixels near the bottom</span>
+<span class="comment">% of the image. This is probably due to the lights of the car illuminating</span>
+<span class="comment">% the road. After these two peaks there is a drop in the histogram.</span>
+
+<span class="comment">% For road_2, there is a single peak around the grayscale level 5 and then</span>
+<span class="comment">% a gradual decrease.</span>
+
+<span class="comment">% For road_3, there is a very large peak near the very bottom of the</span>
+<span class="comment">% grayscale levels. This is due to the fact that almost the entire image is</span>
+<span class="comment">% black. It has the fewest bright spots of the three images.</span>
+</pre><img vspace="5" hspace="5" src="q4_01.png" alt=""> <h2>Question 4. Part B<a name="2"></a></h2><pre class="codeinput">road1_ghist = histeq(road1);
+road2_ghist = histeq(road2);
+road3_ghist = histeq(road3);
+
+<span class="comment">% figure;</span>
+<span class="comment">% subplot(3,2,1); imshow(road1); title('Original Image');</span>
+<span class="comment">% subplot(3,2,3); imshow(road2);</span>
+<span class="comment">% subplot(3,2,5); imshow(road3);</span>
+<span class="comment">% subplot(3,2,2); imshow(road1_ghist); title('With global histogram equalization');</span>
+<span class="comment">% subplot(3,2,4); imshow(road2_ghist);</span>
+<span class="comment">% subplot(3,2,6); imshow(road3_ghist);</span>
+figure; imshow(road1_ghist); title(<span class="string">'With global histogram equalization'</span>);
+figure; imshow(road2_ghist); title(<span class="string">'With global histogram equalization'</span>);
+figure; imshow(road3_ghist); title(<span class="string">'With global histogram equalization'</span>);
+
+figure;
+subplot(3,1,1); imhist(road1_ghist);
+title(<span class="string">'Histograms with global histogram equalization'</span>);
+subplot(3,1,2); imhist(road2_ghist);
+subplot(3,1,3); imhist(road3_ghist);
+
+
+<span class="comment">% We can see that with equalization a lot of detail becomes visible. For</span>
+<span class="comment">% example, in road_1 we can see the trees and the houses in front of the</span>
+<span class="comment">% car. In road_2 we can see the edges of the house better, as well as the</span>
+<span class="comment">% sign towards the left side of the image. In road_3 we can clearly see the</span>
+<span class="comment">% building on the left as well as the building on the right. Both of these</span>
+<span class="comment">% buildings were very hard to make out in the original image.</span>
+
+<span class="comment">% However, we see a lot of patches showing up in the image equalized</span>
+<span class="comment">% images. This is due to the fact that in histogram equalization, bins</span>
+<span class="comment">% cannot be "split". That is, the number of non-zero bins cannot increase,</span>
+<span class="comment">% and therefore there will be jumps between different grayscale values, not</span>
+<span class="comment">% a gradual transition like we would expect.</span>
+</pre><img vspace="5" hspace="5" src="q4_02.png" alt=""> <img vspace="5" hspace="5" src="q4_03.png" alt=""> <img vspace="5" hspace="5" src="q4_04.png" alt=""> <img vspace="5" hspace="5" src="q4_05.png" alt=""> <h2>Question 4. Part C<a name="3"></a></h2><pre class="codeinput">road1_tiles = 16; road1_lim = 0.02;
+road2_tiles = 16; road2_lim = 0.02;
+road3_tiles = 16; road3_lim = 0.015;
+
+road1_ahist = adapthisteq(road1, <span class="string">'NumTiles'</span>, [road1_tiles, road1_tiles], <span class="string">'ClipLimit'</span>, road1_lim);
+road2_ahist = adapthisteq(road2, <span class="string">'NumTiles'</span>, [road2_tiles, road2_tiles], <span class="string">'ClipLimit'</span>, road2_lim);
+road3_ahist = adapthisteq(road3, <span class="string">'NumTiles'</span>, [road3_tiles, road3_tiles], <span class="string">'ClipLimit'</span>, road3_lim);
+
+display([<span class="string">'For Road_1: tiles = '</span> num2str(road1_tiles) <span class="string">'x'</span> num2str(road1_tiles) <span class="string">' , Clipping limit = '</span> num2str(road1_lim) ]);
+display([<span class="string">'For Road_2: tiles = '</span> num2str(road2_tiles) <span class="string">'x'</span> num2str(road2_tiles) <span class="string">' , Clipping limit = '</span> num2str(road2_lim) ]);
+display([<span class="string">'For Road_3: tiles = '</span> num2str(road3_tiles) <span class="string">'x'</span> num2str(road3_tiles) <span class="string">' , Clipping limit = '</span> num2str(road3_lim) ]);
+
+<span class="comment">% figure;</span>
+<span class="comment">% subplot(3,2,1); imshow(road1_ahist); title('With adaptive equalization');</span>
+<span class="comment">% subplot(3,2,3); imshow(road2_ahist);</span>
+<span class="comment">% subplot(3,2,5); imshow(road3_ahist);</span>
+<span class="comment">% subplot(3,2,2); imshow(road1_ghist); title('With global equalization');</span>
+<span class="comment">% subplot(3,2,4); imshow(road2_ghist);</span>
+<span class="comment">% subplot(3,2,6); imshow(road3_ghist);</span>
+
+figure; imshow(road1_ahist); title(<span class="string">'With adaptive histogram equalization'</span>);
+figure; imshow(road2_ahist); title(<span class="string">'With adaptive histogram equalization'</span>);
+figure; imshow(road3_ahist); title(<span class="string">'With adaptive histogram equalization'</span>);
+
+figure;
+subplot(3,1,1); imhist(road1_ahist);
+title(<span class="string">'Histograms with adaptive histogram equalization'</span>);
+subplot(3,1,2); imhist(road2_ahist);
+subplot(3,1,3); imhist(road3_ahist);
+
+
+<span class="comment">% We can see that when we apply adaptive histogram equalization as opposed</span>
+<span class="comment">% to global histogram equalization we are able to pull out detail from the</span>
+<span class="comment">% images without adding noise and "patchiness" to the image. We can still</span>
+<span class="comment">% see the trees and the house in road_1, the edges of the roof and the road</span>
+<span class="comment">% sign in road_2, and the buildings on the left and right in road_3.</span>
+</pre><pre class="codeoutput">For Road_1: tiles = 16x16 , Clipping limit = 0.02
+For Road_2: tiles = 16x16 , Clipping limit = 0.02
+For Road_3: tiles = 16x16 , Clipping limit = 0.015
+</pre><img vspace="5" hspace="5" src="q4_06.png" alt=""> <img vspace="5" hspace="5" src="q4_07.png" alt=""> <img vspace="5" hspace="5" src="q4_08.png" alt=""> <img vspace="5" hspace="5" src="q4_09.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Question 4. Part A
+clear all;
+close all;
+
+road1 = imread('hw1_data/hw1_dark_road_1.jpg');
+road2 = imread('hw1_data/hw1_dark_road_2.jpg');
+road3 = imread('hw1_data/hw1_dark_road_3.jpg');
+
+figure; 
+subplot(3,1,1); imhist(road1);
+title('Hisograms of original images');
+subplot(3,1,2); imhist(road2);
+subplot(3,1,3); imhist(road3);
+
+% We can see that for road_1 there is a large peak around grayscale level 5
+% and then a second smaller peak around the grayscale level 10. This second
+% peak is due to the dark gray (but not quite black) pixels near the bottom
+% of the image. This is probably due to the lights of the car illuminating
+% the road. After these two peaks there is a drop in the histogram.
+
+% For road_2, there is a single peak around the grayscale level 5 and then
+% a gradual decrease.
+
+% For road_3, there is a very large peak near the very bottom of the
+% grayscale levels. This is due to the fact that almost the entire image is
+% black. It has the fewest bright spots of the three images.
+
+%% Question 4. Part B
+
+road1_ghist = histeq(road1);
+road2_ghist = histeq(road2);
+road3_ghist = histeq(road3);
+
+% figure;
+% subplot(3,2,1); imshow(road1); title('Original Image');
+% subplot(3,2,3); imshow(road2);
+% subplot(3,2,5); imshow(road3); 
+% subplot(3,2,2); imshow(road1_ghist); title('With global histogram equalization');
+% subplot(3,2,4); imshow(road2_ghist);
+% subplot(3,2,6); imshow(road3_ghist);
+figure; imshow(road1_ghist); title('With global histogram equalization');
+figure; imshow(road2_ghist); title('With global histogram equalization');
+figure; imshow(road3_ghist); title('With global histogram equalization');
+
+figure; 
+subplot(3,1,1); imhist(road1_ghist);
+title('Histograms with global histogram equalization');
+subplot(3,1,2); imhist(road2_ghist);
+subplot(3,1,3); imhist(road3_ghist);
+
+
+% We can see that with equalization a lot of detail becomes visible. For
+% example, in road_1 we can see the trees and the houses in front of the
+% car. In road_2 we can see the edges of the house better, as well as the
+% sign towards the left side of the image. In road_3 we can clearly see the
+% building on the left as well as the building on the right. Both of these
+% buildings were very hard to make out in the original image.
+
+% However, we see a lot of patches showing up in the image equalized
+% images. This is due to the fact that in histogram equalization, bins
+% cannot be "split". That is, the number of non-zero bins cannot increase,
+% and therefore there will be jumps between different grayscale values, not
+% a gradual transition like we would expect.
+
+%% Question 4. Part C
+road1_tiles = 16; road1_lim = 0.02;
+road2_tiles = 16; road2_lim = 0.02;
+road3_tiles = 16; road3_lim = 0.015;
+
+road1_ahist = adapthisteq(road1, 'NumTiles', [road1_tiles, road1_tiles], 'ClipLimit', road1_lim);
+road2_ahist = adapthisteq(road2, 'NumTiles', [road2_tiles, road2_tiles], 'ClipLimit', road2_lim);
+road3_ahist = adapthisteq(road3, 'NumTiles', [road3_tiles, road3_tiles], 'ClipLimit', road3_lim);
+
+display(['For Road_1: tiles = ' num2str(road1_tiles) 'x' num2str(road1_tiles) ' , Clipping limit = ' num2str(road1_lim) ]);
+display(['For Road_2: tiles = ' num2str(road2_tiles) 'x' num2str(road2_tiles) ' , Clipping limit = ' num2str(road2_lim) ]);
+display(['For Road_3: tiles = ' num2str(road3_tiles) 'x' num2str(road3_tiles) ' , Clipping limit = ' num2str(road3_lim) ]);
+
+% figure;
+% subplot(3,2,1); imshow(road1_ahist); title('With adaptive equalization');
+% subplot(3,2,3); imshow(road2_ahist);
+% subplot(3,2,5); imshow(road3_ahist); 
+% subplot(3,2,2); imshow(road1_ghist); title('With global equalization');
+% subplot(3,2,4); imshow(road2_ghist);
+% subplot(3,2,6); imshow(road3_ghist);
+
+figure; imshow(road1_ahist); title('With adaptive histogram equalization');
+figure; imshow(road2_ahist); title('With adaptive histogram equalization');
+figure; imshow(road3_ahist); title('With adaptive histogram equalization');
+
+figure; 
+subplot(3,1,1); imhist(road1_ahist);
+title('Histograms with adaptive histogram equalization');
+subplot(3,1,2); imhist(road2_ahist);
+subplot(3,1,3); imhist(road3_ahist);
+
+
+% We can see that when we apply adaptive histogram equalization as opposed
+% to global histogram equalization we are able to pull out detail from the
+% images without adding noise and "patchiness" to the image. We can still
+% see the trees and the house in road_1, the edges of the roof and the road
+% sign in road_2, and the buildings on the left and right in road_3.
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

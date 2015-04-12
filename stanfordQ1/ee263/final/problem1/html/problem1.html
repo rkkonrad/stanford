@@ -1,0 +1,124 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>problem1</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-08"><meta name="DC.source" content="problem1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">clear; close <span class="string">all</span>;
+load(<span class="string">'/Users/rkkonrad/stanford/stanfordQ1/ee263/final/problem1/subsp.mat'</span>);
+
+disp([<span class="string">'The rank of A1 is : '</span> num2str(rank(A1))]);
+disp([<span class="string">'The rank of A2 is : '</span> num2str(rank(A2))]);
+
+[QF1,RF1] = qr(A1); <span class="comment">%full qr factorization</span>
+Q1 = QF1(:,1:rank(A1)); <span class="comment">% orthonormal basis for range(A1)</span>
+
+[QF2,RF2] = qr(A2); <span class="comment">%full qr factorization</span>
+Q2 = QF2(:,1:rank(A2)); <span class="comment">%orthonormal basis for range(A2)</span>
+
+disp(<span class="string">'The dot products are:'</span>);
+dot = Q1'*Q2
+
+<span class="comment">% Because the dot product between the column matrix Q1 and every column of</span>
+<span class="comment">% Q2 is not 0, this means that Q1 can be expressed by some linear</span>
+<span class="comment">% combination of the columns of Q2. Therefore the ranges of A1 and A2</span>
+<span class="comment">% overlap.</span>
+
+<span class="comment">% Therefore we can we that even in 1 time step, with the right choices for</span>
+<span class="comment">% x1(0) and x2(0) the could meet each other at the same location.</span>
+</pre><pre class="codeoutput">The rank of A1 is : 1
+The rank of A2 is : 3
+The dot products are:
+
+dot =
+
+    0.0477    0.3749   -0.2558
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all;
+load('/Users/rkkonrad/stanford/stanfordQ1/ee263/final/problem1/subsp.mat');
+
+disp(['The rank of A1 is : ' num2str(rank(A1))]);
+disp(['The rank of A2 is : ' num2str(rank(A2))]);
+
+[QF1,RF1] = qr(A1); %full qr factorization
+Q1 = QF1(:,1:rank(A1)); % orthonormal basis for range(A1)
+
+[QF2,RF2] = qr(A2); %full qr factorization
+Q2 = QF2(:,1:rank(A2)); %orthonormal basis for range(A2)
+
+disp('The dot products are:');
+dot = Q1'*Q2
+
+% Because the dot product between the column matrix Q1 and every column of
+% Q2 is not 0, this means that Q1 can be expressed by some linear
+% combination of the columns of Q2. Therefore the ranges of A1 and A2
+% overlap.
+
+% Therefore we can we that even in 1 time step, with the right choices for
+% x1(0) and x2(0) the could meet each other at the same location.
+##### SOURCE END #####
+--></body></html>

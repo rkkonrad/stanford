@@ -1,0 +1,19 @@
+%% Question 4. Part A
+clear all;
+close all;
+
+training{1} = imread('hw2_data/hw2_cone_training_1.jpg');
+training{2} = imread('hw2_data/hw2_cone_training_2.jpg');
+training{3} = imread('hw2_data/hw2_cone_training_3.jpg');
+training{4} = imread('hw2_data/hw2_cone_training_4.jpg');
+training{5} = imread('hw2_data/hw2_cone_training_5.jpg');
+
+training_mask{1} = imread('hw2_data/hw2_cone_training_1.jpg');
+training_mask{2} = imread('hw2_data/hw2_cone_training_2.jpg');
+training_mask{3} = imread('hw2_data/hw2_cone_training_3.jpg');
+training_mask{4} = imread('hw2_data/hw2_cone_training_4.jpg');
+training_mask{5} = imread('hw2_data/hw2_cone_training_5.jpg');
+
+testing{1} = imread('hw2_data/hw2_cone_testing_1.jpg');
+testing{1} = imread('hw2_data/hw2_cone_testing_2.jpg');
+

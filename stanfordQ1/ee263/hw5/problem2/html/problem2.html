@@ -1,0 +1,229 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>problem2</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-10-30"><meta name="DC.source" content="problem2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Least Squares</a></li><li><a href="#2">Linearity</a></li></ul></div><h2>Least Squares<a name="1"></a></h2><p>When inputing basis vectors into the simulation function, we saw that different regions of the surface were being heated up. It seemed that there was very little overlap between the functions of the basis vectors. We therefore take the functions of the basis vectors as the columns of an A matrix because they are more or less linearly independant. This turns the problem into a least squares problem with the equation y = Ax. To minimize the cost function we minimize the inside of the square root.</p><pre class="codeinput">clear <span class="string">all</span>;
+Tdes = 500;
+Tdes_vector = Tdes*ones(100,1); <span class="comment">%Desired value at each tile</span>
+<span class="keyword">for</span> i = 1:10
+    p = zeros(10,1);
+    p(i) = 1;
+    A(:,i) = surface_heating_sim(p);  <span class="comment">%Simulation of basis vectors</span>
+<span class="keyword">end</span>
+xhat = (A'*A)\A'*Tdes_vector <span class="comment">%Least squares to find xhat which minimizes cost function</span>
+e = sqrt(1/100*norm(surface_heating_sim(xhat)-Tdes_vector)^2);
+</pre><pre class="codeoutput">Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+
+xhat =
+
+    0.4194
+    0.4324
+    1.3558
+    0.9766
+    2.7602
+    1.1718
+    0.8185
+    0.3758
+    2.9371
+    1.1239
+
+Simulating the system...............
+Done!
+</pre><img vspace="5" hspace="5" src="problem2_01.png" alt=""> <h2>Linearity<a name="2"></a></h2><p>We noticed when playing around with the values that the simulation function had certain linear properties. Scaling the input basis vectors by some alpha resulted in linear scaling of the output as well. We saw a similar result when scaling the xhat generated above. We saw that xhat did not correctly minimize the system, it simply gave the ratio of the power lamps to create uniform heating on the surface. To find the appropriate xhat which acheives the goal of heating the surface to a uniform temperatue Tdes we much scale xhat. As stated in the problem the simulation function is nearly affine, therefore we assume a form y = m*c+b. Where m is the slope of xhat, c is the scaling factor, and b is the y intercept. Knowing a Tdes (y in this equation), xhat, and b we can solve for the appropriate m which minimizes the cost function.</p><pre class="codeinput">xhat = xhat/norm(xhat); <span class="comment">%normalize xhat</span>
+T0 = surface_heating_sim(zeros(10,1));
+Txhat = surface_heating_sim(xhat);
+
+<span class="comment">% Find the slope, y intercept of the line</span>
+m = mean(Txhat) - mean(T0);
+b = mean(T0);
+
+<span class="comment">% Solve for c</span>
+c = (Tdes - b)/ (m);
+
+<span class="comment">%Error using this method</span>
+e = sqrt(1/100*norm(surface_heating_sim(c*xhat)-Tdes_vector)^2);
+
+[<span class="string">'The RMS error due to using this method is '</span> num2str(e)]
+
+[<span class="string">'The lamp powers used are as follows: '</span>]
+c*xhat
+
+<span class="comment">% As can be seen above, the surface_heating_sim function was used 12 times</span>
+<span class="comment">% 10 times to create the A matrix to find xhat and then twice more to</span>
+<span class="comment">% calculate to generate a model for the line. This is not counting the</span>
+<span class="comment">% times that the function was used to compute the RMS error.</span>
+</pre><pre class="codeoutput">Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+Simulating the system...............
+Done!
+
+ans =
+
+The RMS error due to using this method is 34.7671
+
+
+ans =
+
+The lamp powers used are as follows: 
+
+
+ans =
+
+    1.0483
+    1.0806
+    3.3884
+    2.4407
+    6.8984
+    2.9286
+    2.0457
+    0.9391
+    7.3407
+    2.8088
+
+</pre><img vspace="5" hspace="5" src="problem2_02.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Least Squares
+% When inputing basis vectors into the simulation function, we saw that
+% different regions of the surface were being heated up. It seemed that
+% there was very little overlap between the functions of the basis vectors.
+% We therefore take the functions of the basis vectors as the columns of an
+% A matrix because they are more or less linearly independant. This turns
+% the problem into a least squares problem with the equation y = Ax. To
+% minimize the cost function we minimize the inside of the square root. 
+clear all;
+Tdes = 500;
+Tdes_vector = Tdes*ones(100,1); %Desired value at each tile
+for i = 1:10
+    p = zeros(10,1);
+    p(i) = 1;
+    A(:,i) = surface_heating_sim(p);  %Simulation of basis vectors
+end
+xhat = (A'*A)\A'*Tdes_vector %Least squares to find xhat which minimizes cost function
+e = sqrt(1/100*norm(surface_heating_sim(xhat)-Tdes_vector)^2);
+
+%% Linearity
+% We noticed when playing around with the values that the simulation
+% function had certain linear properties. Scaling the input basis vectors
+% by some alpha resulted in linear scaling of the output as well. We saw
+% a similar result when scaling the xhat generated above. We saw that
+% xhat did not correctly minimize the system, it simply gave the ratio of
+% the power lamps to create uniform heating on the surface. To find the
+% appropriate xhat which acheives the goal of heating the surface to a
+% uniform temperatue Tdes we much scale xhat. As stated in the problem
+% the simulation function is nearly affine, therefore we assume a form
+% y = m*c+b. Where m is the slope of xhat, c is the scaling
+% factor, and b is the y intercept. Knowing a Tdes (y in this equation),
+% xhat, and b we can solve for the appropriate m which minimizes the
+% cost function.
+
+xhat = xhat/norm(xhat); %normalize xhat
+T0 = surface_heating_sim(zeros(10,1));
+Txhat = surface_heating_sim(xhat);
+
+% Find the slope, y intercept of the line
+m = mean(Txhat) - mean(T0);   
+b = mean(T0);
+
+% Solve for c
+c = (Tdes - b)/ (m);
+
+%Error using this method
+e = sqrt(1/100*norm(surface_heating_sim(c*xhat)-Tdes_vector)^2);
+
+['The RMS error due to using this method is ' num2str(e)]
+
+['The lamp powers used are as follows: ']
+c*xhat
+
+% As can be seen above, the surface_heating_sim function was used 12 times
+% 10 times to create the A matrix to find xhat and then twice more to 
+% calculate to generate a model for the line. This is not counting the 
+% times that the function was used to compute the RMS error.
+
+##### SOURCE END #####
+--></body></html>
